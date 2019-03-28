@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <head>
 <title>OS</title>
-<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
+{{#if osType}}
+<body background="img/{{osType}}.jpg">
+{{else}}
 <body>
-	<h1>Virtual File System</h1>
+{{/if}}
 	{{{body}}}
 </body>
 </html>

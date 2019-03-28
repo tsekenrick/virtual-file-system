@@ -28,17 +28,22 @@ const initPath = path.join(__dirname, 'vfs', 'init.json');
 fs.readFile(initPath, (err, data) => {
     if(err) { throw err; }
     fileSystem = new vfs.FileSystem(JSON.parse(data));
-    // console.log(fileSystem.dir.fs['/']['files']['lib']);
-    
+    // console.log(fileSystem.traverseAndList('/'));
     app.get('/', (req, res) => {
         res.render('index');
     });
 
     app.get('/vfs', (req, res) => {
-        console.log(req.query.name);
-        res.send('hello');
+        const osType = (req.query.name);
+        res.render('terminal', {"osType": osType});
         // check req.query for os type
     });
+
+    app.post('/vfs', (req, res) => {
+
+        res.redirect('/vfs');
+    });
+
     app.listen(3000);
 });
 

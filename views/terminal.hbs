@@ -1,0 +1,47 @@
+{{!-- <img src="img/{{osType}}.jpg" class="bg"> --}} 
+<br><br><br><br><br><br>
+<div class="form">
+    <h6>Command&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Command</h6>
+    <select required=true name="command">
+            <option value="">--Pick a command--</option>
+            <option value="ls">ls</option>
+            <option value="tree">tree</option>
+            <option value="cat">cat</option>
+    </select>&emsp;&emsp;
+    <select required=true name="command">
+            <option value="">--Pick a command--</option>
+            <option value="mkdir">mkdir</option>
+            <option value="write">write</option>
+    </select><br>
+</div>
+
+
+<h6>Option&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Path</h6>
+<div class="form">
+    <form method="GET" action="http://localhost:3000/vfs">
+        <input type="text" name="option">
+    </form>
+    <form method="POST" action="http://localhost:3000/vfs">
+        <input type="text" name="path">
+    </form>
+</div>
+
+<h6>Path&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Content</h6>
+<div class="form">
+    <form method="GET" action="http://localhost:3000/vfs">
+        <input type="text" name="path">
+    </form>
+    <form method="POST" action="http://localhost:3000/vfs">
+        <input type="text" name="content">
+    </form>
+</div>
+
+<div class="form">
+    <input type="Submit" value="Submit" class="submit">&emsp;&emsp;&emsp;
+    <input type="submit" value="Submit" class="submit">
+</div>
+
+<div class="form">
+    <h6>Terminal:</h6><br>
+    {{!-- output here --}}
+</div>

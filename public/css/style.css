@@ -1,7 +1,33 @@
-body{
-    color: greenyellow;
+body {
+    background-size: cover;
 }
 
-img {
-    background-size: cover;
+h6 {
+    color: greenyellow;
+    text-align: center;
+}
+
+div.form {
+    display: block;
+    text-align: center;
+}
+
+form {
+    margin: 0 auto; 
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+}
+
+select {
+    margin: 0 auto;
+    /* width: 250 px; */
+}
+
+div.submitWrap {
+    display: block;
+    margin: 0 auto;
+    margin-left: auto;
+    margin-right: auto;
 }
