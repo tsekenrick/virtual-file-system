@@ -20,8 +20,10 @@
     "eslint": "^5.15.3"
   },
   "dependencies": {
+    "eslint-plugin-mocha": "^5.3.0",
     "express": "^4.16.4",
     "hbs": "^4.0.3",
+    "mocha": "^6.0.2",
     "moment": "^2.24.0"
   }
 }
