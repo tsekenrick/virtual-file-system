@@ -51,24 +51,28 @@ class FileSystem {
     }
 
     makeDirectory(path, dirName) {
-        /* Params:
-        *    A list of directories destructured from the path,
-        *    the directory name that is going to create
-        *    Example:
-        *       /path/to/this/file
-        *       ['', 'path', 'to', 'this', 'file']
-        */
         const res = this.find(path);
         if (!res.hasOwnProperty('files')) {
             return res;
         } else {
-            res['files'][dirName]['permission'] = 'drwxr--r--';
-            res['files'][dirName]['hard-links'] = 1;
-            res['files'][dirName]['owner-name'] = 'user';
-            res['files'][dirName]['owner-group'] = 'user';
-            res['files'][dirName]['last-modified'] = moment().format('MMM DD HH:mm');
-            res['files'][dirName]['size'] = Math.floor(Math.random() * Math.floor(6));
-            res['files'][dirName]['files'] = {};
+            const objToAdd = {
+                'permission': 'drwxr--r--',
+                'hard-links': 1,
+                'owner-name': 'user',
+                'owner-group': 'user',
+                'last-modified': moment().format('MMM DD HH:mm'),
+                'size': Math.floor(Math.random() * Math.floor(6)),
+                'files': {}
+            };
+
+            res['files'][dirName] = objToAdd;
+            // res['files'][dirName].permission = 'drwxr--r--';
+            // res['files'][dirName].hard-links = 1;
+            // res['files'][dirName]['owner-name'] = 'user';
+            // res['files'][dirName]['owner-group'] = 'user';
+            // res['files'][dirName]['last-modified'] = moment().format('MMM DD HH:mm');
+            // res['files'][dirName]['size'] = Math.floor(Math.random() * Math.floor(6));
+            // res['files'][dirName]['files'] = {};
 
             return res;
         }
@@ -84,13 +88,6 @@ class FileSystem {
     }
 
     write(path, content) {
-        /* Params:
-        *    A list of directories destructured from the path,
-        *    and the content ready to be written to the file
-        *    Example:
-        *       /path/to/this/file
-        *       ['', 'path', 'to', 'this', 'file']
-        */
         let pathList = path.split('/');
         const fileName = pathList.pop();
         pathList = pathList.join('/'); // create new path without the final fileName

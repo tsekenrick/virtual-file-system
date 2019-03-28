@@ -33,15 +33,42 @@ fs.readFile(initPath, (err, data) => {
         res.render('index');
     });
 
+    let osType;
     app.get('/vfs', (req, res) => {
-        const osType = (req.query.name);
-        res.render('terminal', {"osType": osType});
-        // check req.query for os type
+        osType = req.query.name;
+        const command = req.query.command;
+        const option = req.query.option;
+        const path = req.query.path === '' ? '/' : req.query.path;
+        let result;
+
+        if(command === 'ls') {
+            if(option === '-l') {
+                result = fileSystem.traverseAndList(path);
+            } else {
+                result = fileSystem.traverseAndList(path);
+            }
+        } else if(command === 'cat') {
+            result = fileSystem.cat(path);
+        } else if(command === 'tree') {
+            result = fileSystem.find(path);
+        }
+
+        res.render('terminal', {"osType": osType, "result": result});
     });
 
     app.post('/vfs', (req, res) => {
+        const command = req.body.command;
+        const path = req.body.path;
+        const content = req.body.content;
+        let result;
 
-        res.redirect('/vfs');
+        if(command === 'mkdir') {
+            result = fileSystem.makeDirectory(path, content);
+        } else if(command === 'write') {
+            result = fileSystem.write(path, content);
+        }
+
+        res.render('terminal', {"osType": osType, "result": Object.keys(result.files)[0]});
     });
 
     app.listen(3000);
