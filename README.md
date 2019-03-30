@@ -1,8 +1,6 @@
 # Homework 04
 
-## Links 
-
-Using [GitHub's documentation for linking to code](https://help.github.com/en/articles/creating-a-permanent-link-to-a-code-snippet), add links to:
+## Links
 
 * the part of your code that instantiates the `FileSystem` class with an object (from parsed JSON) being used to bootstrap it with some initial virtual file system data
 	* [Line 31, app.js](https://github.com/nyu-csci-ua-0480-008-spring-2019/tsekenrick-homework04/blob/ae94e4fbb2625c7e9466761a1a6c337609918112/app.js#L31)
