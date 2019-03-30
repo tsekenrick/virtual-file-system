@@ -30,17 +30,12 @@ fs.readFile(initPath, (err, data) => {
     if(err) { throw err; }
     fileSystem = new vfs.FileSystem(JSON.parse(data));
 
-    // debug
-    const initRes = fileSystem.find('/');
-    console.log(fileSystem.treeFind(initRes, [], 1));
-
     app.get('/', (req, res) => {
         res.render('index');
     });
 
     app.get('/vfs', (req, res) => {
         if(req.query.name) { osType = req.query.name; }
-        // if(!osType) { osType = 'debian'; }
         const command = req.query.command;
         const option = req.query.option;
         const path = req.query.path === '' ? '/' : req.query.path;
@@ -62,7 +57,6 @@ fs.readFile(initPath, (err, data) => {
                 result = tmp[0].reduce((acc, cur) => { 
                     acc += cur;
                     acc += '<br>';
-                    console.log(acc);
                     return acc;
                 }, '');
             }
@@ -75,7 +69,6 @@ fs.readFile(initPath, (err, data) => {
                 acc += '&emsp;'.repeat(Object.values(cur)[0] * 2);
                 acc += Object.keys(cur)[0];
                 acc += '<br>';
-                console.log(acc);
                 return acc;
             }, '');
         }
@@ -92,13 +85,13 @@ fs.readFile(initPath, (err, data) => {
 
         if(command === 'mkdir') {
             const tmp = fileSystem.makeDirectory(path, content);
-            console.log(tmp);
             result = '';
             Object.keys(tmp.files).forEach(element => {
                 result += element + '<br>';
             });
         } else if(command === 'write') {
             result = fileSystem.write(path, content);
+            result = result === "write: No such file or directory." ? "write: No such file or directory." : '';
         }
 
         res.render('terminal', {"osType": osType, "result": result});

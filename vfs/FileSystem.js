@@ -106,22 +106,28 @@ class FileSystem {
         const fileName = pathList.pop();
         pathList = pathList.join('/'); // create new path without the final fileName
         const res = this.find(pathList);
-        
-        // file did not exist originally
+        // if the specified path doesn't exist, error
+        if(!res || res.hasOwnProperty('error')) { return 'write: No such file or directory.'; }
+
+        // if path ends in a file and not a directory, error
         if (!res.hasOwnProperty('files')) {
-            return res;      
+            return 'write: No such file or directory.';      
         // if file existed, overwrite content property
         } else if (res['files'].hasOwnProperty(fileName)) {
             res['files'][fileName]['content'] = content;
             return res;
+        // if path is valid directory but file didn't exist, make one
         } else {
-            res['files'][fileName]['permission'] = '-rwxr--r--';
-            res['files'][fileName]['hard-links'] = 1;
-            res['files'][fileName]['owner-name'] = 'user';
-            res['files'][fileName]['owner-group'] = 'user';
-            res['files'][fileName]['last-modified'] = moment().format('MMM DD HH:mm');
-            res['files'][fileName]['size'] = Math.floor(Math.random() * Math.floor(6));
-            res['files'][fileName]['content'] = content;
+            const objToAdd = { fileName: {
+                'permission': '-rwxr--r--',
+                'hard-links': 1,
+                'owner-name': 'user',
+                'owner-group': 'user',
+                'last-modified': moment().format('MMM DD HH:mm'),
+                'size': Math.floor(Math.random() * Math.floor(6)),
+                'content': content
+            }};
+            res['files'] = objToAdd;
             return res;
         }   
     }
