@@ -1,11 +1,17 @@
 body {
     background-size: cover;
+    background-repeat: no-repeat;
 }
 
 h6 {
     color: greenyellow;
     text-align: center;
-    font-family: "Courier New", Courier, monospace
+    font-family: "Courier New", Courier, monospace;
+}
+
+h6.terminal {
+    text-align: left;
+    padding-left: 25%;
 }
 
 div.form {
@@ -23,7 +29,6 @@ form {
 
 select {
     margin: 0 auto;
-    /* width: 250 px; */
 }
 
 div.submitWrap {

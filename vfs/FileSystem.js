@@ -12,14 +12,13 @@ class FileSystem {
         if (path === '' || path === '/') {
             return metadata['fs']['/'];
         }
-
+        if(path.slice(-1) === '/') { path = path.slice(0, -1); }
         path = path.split('/');
         // add extra elements to get to the root directory
         path.splice(0, 0, '/');
         path.splice(0, 0, 'fs');
-
+        
         path.forEach(element => {
-            console.log(`logging element ${element}`);
             if (!element) { return; }
 
             if (metadata.hasOwnProperty(element)) {
@@ -37,6 +36,21 @@ class FileSystem {
         return metadata;
     }
 
+    treeFind(pathObj, fileList, recurLevel) {
+        if (pathObj.hasOwnProperty('files')) {
+            return Object.keys(pathObj['files']).reduce((acc,cur) => {
+                const obj = {};
+                obj[cur] = recurLevel;
+                acc.push(obj);
+                if(pathObj['files'][cur].hasOwnProperty('files') && Object.entries(pathObj['files'][cur]).length !== 0) {
+                    this.treeFind(pathObj['files'][cur], fileList, recurLevel + 1);
+                }
+                return acc;
+            }, fileList);
+        }  
+        return fileList;
+    }
+
     traverseAndList(path) {
         const res = this.find(path);
 
@@ -45,7 +59,7 @@ class FileSystem {
             Object.keys(res['files']).forEach((fileName) => {
                 fileList.push(res['files'][fileName]);
             });
-            return fileList;
+            return [Object.keys(res['files']), fileList];
         }
         return [];
     }

@@ -25,17 +25,22 @@ app.set('view engine', 'hbs');
 
 let fileSystem;
 const initPath = path.join(__dirname, 'vfs', 'init.json');
+let osType;
 fs.readFile(initPath, (err, data) => {
     if(err) { throw err; }
     fileSystem = new vfs.FileSystem(JSON.parse(data));
-    // console.log(fileSystem.traverseAndList('/'));
+
+    // debug
+    const initRes = fileSystem.find('/');
+    console.log(fileSystem.treeFind(initRes, [], 1));
+
     app.get('/', (req, res) => {
         res.render('index');
     });
 
-    let osType;
     app.get('/vfs', (req, res) => {
-        osType = req.query.name;
+        if(req.query.name) { osType = req.query.name; }
+        // if(!osType) { osType = 'debian'; }
         const command = req.query.command;
         const option = req.query.option;
         const path = req.query.path === '' ? '/' : req.query.path;
@@ -43,32 +48,60 @@ fs.readFile(initPath, (err, data) => {
 
         if(command === 'ls') {
             if(option === '-l') {
-                result = fileSystem.traverseAndList(path);
+                const tmp = fileSystem.traverseAndList(path);
+                result = tmp[1].reduce((acc, cur, idx) => {
+                    acc += cur['permission'] + ' ';
+                    acc += cur['owner-name'] + ' ';
+                    acc += cur['owner-group'] + ' ';
+                    acc += cur['last-modified'] + ' ';
+                    acc += tmp[0][idx] + '<br>';
+                    return acc;
+                }, '');
             } else {
-                result = fileSystem.traverseAndList(path);
+                const tmp = fileSystem.traverseAndList(path);
+                result = tmp[0].reduce((acc, cur) => { 
+                    acc += cur;
+                    acc += '<br>';
+                    console.log(acc);
+                    return acc;
+                }, '');
             }
         } else if(command === 'cat') {
             result = fileSystem.cat(path);
         } else if(command === 'tree') {
-            result = fileSystem.find(path);
+            let tmp = fileSystem.find(path);
+            tmp = fileSystem.treeFind(tmp, [], 0);
+            result = tmp.reduce((acc, cur) => { 
+                acc += '&emsp;'.repeat(Object.values(cur)[0] * 2);
+                acc += Object.keys(cur)[0];
+                acc += '<br>';
+                console.log(acc);
+                return acc;
+            }, '');
         }
 
         res.render('terminal', {"osType": osType, "result": result});
     });
 
     app.post('/vfs', (req, res) => {
+        // if(!osType) { osType = 'debian'; }
         const command = req.body.command;
         const path = req.body.path;
         const content = req.body.content;
         let result;
 
         if(command === 'mkdir') {
-            result = fileSystem.makeDirectory(path, content);
+            const tmp = fileSystem.makeDirectory(path, content);
+            console.log(tmp);
+            result = '';
+            Object.keys(tmp.files).forEach(element => {
+                result += element + '<br>';
+            });
         } else if(command === 'write') {
             result = fileSystem.write(path, content);
         }
 
-        res.render('terminal', {"osType": osType, "result": Object.keys(result.files)[0]});
+        res.render('terminal', {"osType": osType, "result": result});
     });
 
     app.listen(3000);
