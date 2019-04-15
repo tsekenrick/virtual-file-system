@@ -1,4 +1,5 @@
-# Homework 04
+# Virtual File System
+For this assignment, we were asked to create an Express web application to simulate the basic functionality of a file system that would be found on a Linux shell (e.g. `ls`, `mkdir`, `tree`, etc). The program first parses a json object that represents the initial state of the file system, and then allows users to write commands to the "shell" via form submission, and displays the results.
 
 ## Links
 
